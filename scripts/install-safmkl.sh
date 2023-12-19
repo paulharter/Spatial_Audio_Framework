@@ -89,7 +89,7 @@ echo "Configuration: Builder ${mkl_builder_dir}, ${build_type} ${mkl_interface}"
 if [[ ${build_type} == "sequential" ]]; then
     (cd ${mkl_builder_dir} && make libintel64 interface=${mkl_interface} threading=sequential name="libsaf_mkl_custom_${mkl_interface}" export=saf_mkl_list)
 elif [[ ${build_type} == "threaded" ]]; then
-    (cd ${mkl_builder_dir} && make libintel64 interface=${mkl_interface} threading=parallel name="libsaf_mkl_custom_${mkl_interface}" export=saf_mkl_list)
+    (export MACOSX_DEPLOYMENT_TARGET=10.14 && cd ${mkl_builder_dir} && make libintel64 interface=${mkl_interface} threading=parallel name="libsaf_mkl_custom_${mkl_interface}" export=saf_mkl_list)
 fi
 
 # copy library
