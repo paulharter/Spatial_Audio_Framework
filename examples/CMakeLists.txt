@@ -5,25 +5,7 @@ if(NOT DEFINED saf_example_list)
     # List of examples which have the common structure (<example>.h/.c, <example>_internal.h/.c):
     set(saf_example_list
         ambi_bin
-        ambi_dec
-        ambi_drc
-        ambi_enc
-        ambi_roomsim
-        array2sh
-        beamformer
-        binauraliser
-        binauraliser_nf
-        decorrelator
-        dirass
-        matrixconv
-        multiconv
-        panner
-        pitch_shifter
-        powermap
-        rotator
-        sldoa
-        spreader
-        tvconv)
+        ambi_enc)
 endif()
 
 # Find number of examples
