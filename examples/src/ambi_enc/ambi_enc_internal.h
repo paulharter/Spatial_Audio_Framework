@@ -42,7 +42,7 @@ extern "C" {
 # if defined(FRAME_SIZE) /* Use the global framesize if it is specified: */
 #  define AMBI_ENC_FRAME_SIZE ( FRAME_SIZE )   /**< Framesize, in time-domain samples */
 # else /* Otherwise, the default framesize for this example is: */
-#  define AMBI_ENC_FRAME_SIZE ( 64 )           /**< Framesize, in time-domain samples */
+#  define AMBI_ENC_FRAME_SIZE ( 240 )           /**< Framesize, in time-domain samples */
 # endif
 #endif
 

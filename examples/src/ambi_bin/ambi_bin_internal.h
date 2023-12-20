@@ -64,10 +64,10 @@ extern "C" {
 # if defined(FRAME_SIZE) /* Use the global framesize if it is specified: */
 #  define AMBI_BIN_FRAME_SIZE ( FRAME_SIZE )          /**< Framesize, in time-domain samples */
 # else /* Otherwise, the default framesize for this example is: */
-#  define AMBI_BIN_FRAME_SIZE ( 128 )                 /**< Framesize, in time-domain samples */
+#  define AMBI_BIN_FRAME_SIZE ( 240 )                 /**< Framesize, in time-domain samples */
 # endif
 #endif
-#define HOP_SIZE ( AMBI_BIN_FRAME_SIZE / 2 )                              /**< STFT hop size */
+#define HOP_SIZE ( 120 )                              /**< STFT hop size */
 #define HYBRID_BANDS ( HOP_SIZE + 5 )                 /**< Number of frequency bands */
 #define TIME_SLOTS ( AMBI_BIN_FRAME_SIZE / HOP_SIZE ) /**< Number of STFT timeslots */
 #define POST_GAIN ( -9.0f )                           /**< Post-gain scaling, in dB */

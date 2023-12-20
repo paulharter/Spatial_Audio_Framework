@@ -65,7 +65,7 @@ extern "C" {
 #  define AMBI_DEC_FRAME_SIZE ( 128 )                  /**< Framesize, in time-domain samples */
 # endif
 #endif
-#define HOP_SIZE ( AMBI_DEC_FRAME_SIZE / 2 )                                /**< STFT hop size */
+#define HOP_SIZE ( 128 )                                /**< STFT hop size */
 #define HYBRID_BANDS ( HOP_SIZE + 5 )                  /**< Number of frequency bands */
 #define TIME_SLOTS ( AMBI_DEC_FRAME_SIZE / HOP_SIZE )  /**< Number of STFT timeslots */
 #define MAX_NUM_LOUDSPEAKERS ( MAX_NUM_OUTPUTS )       /**< Maximum permitted output channels */
