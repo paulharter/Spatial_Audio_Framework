@@ -37,7 +37,7 @@ shift
 if [ ! -z "$2" ]; then
     ipp_builder_dir=${2}
 else
-    ipp_builder_dir="/opt/intel/oneapi/ipp/latest/tools/custom_library_tool_python"
+    ipp_builder_dir="/opt/intel/oneapi/ipp/latest/opt/ipp/tools/custom_library_tool_python"
     echo "Using default IPP builder path (${ipp_builder_dir})"
 fi
 
