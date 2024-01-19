@@ -23,7 +23,7 @@ foreach(current_example RANGE ${num_examples})
     add_library(${PROJECT_NAME} STATIC)
 
     # Link with SAF
-    target_link_libraries(${PROJECT_NAME} -lm PRIVATE saf)
+    target_link_libraries(${PROJECT_NAME} PRIVATE saf -lm)
 
     # Source files
     target_sources(${PROJECT_NAME}
