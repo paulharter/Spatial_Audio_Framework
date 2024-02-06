@@ -29,7 +29,7 @@
 void loadSourceConfigPreset
 (
     SOURCE_CONFIG_PRESETS preset,
-    float dirs_deg[MAX_LARK_NUM_INPUTS][2],
+    float dirs_deg[MAX_NUM_INPUTS][2],
     int* newNCH
 )
 { 
@@ -216,7 +216,7 @@ void loadSourceConfigPreset
     saf_assert(nCH>0, "Number of channels must be more than 0");
     
     /* Fill remaining slots with default coords */
-    for(; ch<MAX_LARK_NUM_INPUTS; ch++)
+    for(; ch<MAX_NUM_INPUTS; ch++)
         for(i=0; i<2; i++)
             dirs_deg[ch][i] = __default_LScoords64_rad[ch][i]* (180.0f/SAF_PI);
     

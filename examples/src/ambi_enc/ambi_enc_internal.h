@@ -46,8 +46,8 @@ extern "C" {
 # endif
 #endif
 
-#if !defined(MAX_LARK_NUM_INPUTS)
-#  define MAX_LARK_NUM_INPUTS ( 1024 )
+#if !defined(MAX_NUM_INPUTS)
+#  define MAX_NUM_INPUTS ( 1024 )
 #endif
 
 /* ========================================================================== */
@@ -61,8 +61,8 @@ extern "C" {
 typedef struct _ambi_enc
 {
     /* Internal audio buffers */
-    float inputFrameTD[MAX_LARK_NUM_INPUTS][AMBI_ENC_FRAME_SIZE];              /**< Input frame of signals */
-    float prev_inputFrameTD[MAX_LARK_NUM_INPUTS][AMBI_ENC_FRAME_SIZE];         /**< Previous frame of signals */
+    float inputFrameTD[MAX_NUM_INPUTS][AMBI_ENC_FRAME_SIZE];              /**< Input frame of signals */
+    float prev_inputFrameTD[MAX_NUM_INPUTS][AMBI_ENC_FRAME_SIZE];         /**< Previous frame of signals */
     float tempFrame_fadeOut[MAX_NUM_SH_SIGNALS][AMBI_ENC_FRAME_SIZE];     /**< Temporary frame with linear interpolation (fade-out) applied */
     float tempFrame[MAX_NUM_SH_SIGNALS][AMBI_ENC_FRAME_SIZE];             /**< Temporary frame */
     float outputFrameTD_fadeIn[MAX_NUM_SH_SIGNALS][AMBI_ENC_FRAME_SIZE];  /**< Output frame of SH signals with linear interpolation (fade-in) applied */
@@ -70,21 +70,21 @@ typedef struct _ambi_enc
 
     /* Internal variables */
     float fs;                                                    /**< Host sampling rate */
-    int recalc_SH_FLAG[MAX_LARK_NUM_INPUTS];                          /**< Flags, 1: recalc SH weights, 0: do not */
-    float Y[MAX_NUM_SH_SIGNALS][MAX_LARK_NUM_INPUTS];                 /**< SH weights */
-    float prev_Y[MAX_NUM_SH_SIGNALS][MAX_LARK_NUM_INPUTS];            /**< Previous SH weights */
+    int recalc_SH_FLAG[MAX_NUM_INPUTS];                          /**< Flags, 1: recalc SH weights, 0: do not */
+    float Y[MAX_NUM_SH_SIGNALS][MAX_NUM_INPUTS];                 /**< SH weights */
+    float prev_Y[MAX_NUM_SH_SIGNALS][MAX_NUM_INPUTS];            /**< Previous SH weights */
     float interpolator_fadeIn[AMBI_ENC_FRAME_SIZE];              /**< Linear Interpolator (fade-in) */
     float interpolator_fadeOut[AMBI_ENC_FRAME_SIZE];             /**< Linear Interpolator (fade-out) */
     int new_nSources;                                            /**< New number of input signals (current value will be replaced by this after next re-init) */
     
     /* user parameters */
     int nSources;                                                /**< Current number of input signals */
-    float src_dirs_deg[MAX_LARK_NUM_INPUTS][2];                       /**< Source directions, in degrees */
+    float src_dirs_deg[MAX_NUM_INPUTS][2];                       /**< Source directions, in degrees */
     CH_ORDER chOrdering;                                         /**< Ambisonic channel order convention (see #CH_ORDER) */
     NORM_TYPES norm;                                             /**< Ambisonic normalisation convention (see #NORM_TYPES) */
     SH_ORDERS order;                                             /**< Current SH encoding order */
     int enablePostScaling;                                       /**< Flag 1: output signals scaled by 1/sqrt(nSources), 0: disabled */
-    float src_gains[MAX_LARK_NUM_INPUTS];                             /**< Gains applied per source */
+    float src_gains[MAX_NUM_INPUTS];                             /**< Gains applied per source */
 
 } ambi_enc_data;
     
@@ -98,7 +98,7 @@ typedef struct _ambi_enc
  *
  * The function also returns the number of source in the configuration
  * Note: default uniformly distributed points are used to pad the
- * dirs_deg matrix up to the #MAX_LARK_NUM_INPUTS, if nCH is less than this. This can
+ * dirs_deg matrix up to the #MAX_NUM_INPUTS, if nCH is less than this. This can
  * help avoid scenarios of many sources being panned in the same direction, or
  * triangulations errors.
  *
@@ -108,7 +108,7 @@ typedef struct _ambi_enc
  * @param[out] nCH      (&) number of source directions in the configuration
  */
 void loadSourceConfigPreset(SOURCE_CONFIG_PRESETS preset,
-                            float dirs_deg[MAX_LARK_NUM_INPUTS][2],
+                            float dirs_deg[MAX_NUM_INPUTS][2],
                             int* nCH);
 
 
