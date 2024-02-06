@@ -22,7 +22,7 @@
  * @date 07.10.2016
  * @license ISC
  */
-
+#include <iostream>
 #include "ambi_enc.h"
 #include "ambi_enc_internal.h"
 
