@@ -228,7 +228,7 @@ typedef enum {
 #define MAX_NUM_CHANNELS ( 64 )
 
 /** Maximum number of input channels supported */
-#define MAX_NUM_INPUTS ( 64 )
+#define MAX_NUM_INPUTS ( 1024 )
 
 /** Maximum number of output channels supported */
 #define MAX_NUM_OUTPUTS ( MAX_NUM_CHANNELS )
