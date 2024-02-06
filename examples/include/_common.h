@@ -225,7 +225,7 @@ typedef enum {
 #define PROGRESSBARTEXT_CHAR_LENGTH ( 256 )
 
 /** Maximum number of input/output channels supported */
-#define MAX_NUM_CHANNELS ( 64 )
+#define MAX_NUM_CHANNELS ( 1024 )
 
 /** Maximum number of input channels supported */
 #define MAX_NUM_INPUTS ( MAX_NUM_CHANNELS )

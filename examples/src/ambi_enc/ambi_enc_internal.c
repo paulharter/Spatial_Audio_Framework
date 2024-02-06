@@ -216,9 +216,9 @@ void loadSourceConfigPreset
     saf_assert(nCH>0, "Number of channels must be more than 0");
     
     /* Fill remaining slots with default coords */
-    for(; ch<MAX_NUM_INPUTS; ch++)
-        for(i=0; i<2; i++)
-            dirs_deg[ch][i] = __default_LScoords64_rad[ch][i]* (180.0f/SAF_PI);
+//    for(; ch<MAX_NUM_INPUTS; ch++)
+//        for(i=0; i<2; i++)
+//            dirs_deg[ch][i] = __default_LScoords64_rad[ch][i]* (180.0f/SAF_PI);
     
     /* specify new number of channels (for dynamically changing the number of TFT channels) */
     (*newNCH) = nCH; 
