@@ -22,33 +22,35 @@
  * @date 07.10.2016
  * @license ISC
  */
-#include <iostream>
+
 #include "ambi_enc.h"
 #include "ambi_enc_internal.h"
+#include <stdio.h>
 
 void ambi_enc_create
 (
     void ** const phAmbi
 )
 {
-    std::cout << "hello 1\n";
+    printf( "hello 1\n" );
     ambi_enc_data* pData = (ambi_enc_data*)malloc1d(sizeof(ambi_enc_data));
-    std::cout << "hello 2\n";
+
     *phAmbi = (void*)pData;
     int i;
-
+    printf( "hello 2\n" );
     pData->order = 1;
     
     /* default user parameters */
-    std::cout << "hello 3\n";
+
     loadSourceConfigPreset(SOURCE_CONFIG_PRESET_DEFAULT, pData->src_dirs_deg, &(pData->new_nSources));
-    std::cout << "hello 4\n";
+    printf( "hello 3\n" );
     pData->nSources = pData->new_nSources;
     for(i=0; i<MAX_NUM_INPUTS; i++){
         pData->recalc_SH_FLAG[i] = 1;
         pData->src_gains[i] = 1.f;
     }
-    std::cout << "hello 5\n";
+    printf( "hello 4\n" );
+
     pData->chOrdering = CH_ACN;
     pData->norm = NORM_SN3D;
     pData->order = SH_ORDER_FIRST;
