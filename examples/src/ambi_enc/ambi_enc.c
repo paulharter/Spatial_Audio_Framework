@@ -40,7 +40,7 @@ void ambi_enc_create
     /* default user parameters */
     loadSourceConfigPreset(SOURCE_CONFIG_PRESET_DEFAULT, pData->src_dirs_deg, &(pData->new_nSources));
     pData->nSources = pData->new_nSources;
-    for(i=0; i<MAX_NUM_INPUTS; i++){
+    for(i=0; i<MAX_LARK_NUM_INPUTS; i++){
         pData->recalc_SH_FLAG[i] = 1;
         pData->src_gains[i] = 1.f;
     }
@@ -78,9 +78,9 @@ void ambi_enc_init
         pData->interpolator_fadeIn[i-1]  = (float)i*1.0f/(float)AMBI_ENC_FRAME_SIZE;
         pData->interpolator_fadeOut[i-1] = 1.0f - pData->interpolator_fadeIn[i-1];
     }
-    memset(pData->prev_Y, 0, MAX_NUM_SH_SIGNALS*MAX_NUM_INPUTS*sizeof(float));
-    memset(pData->prev_inputFrameTD, 0, MAX_NUM_INPUTS*AMBI_ENC_FRAME_SIZE*sizeof(float));
-    for(i=0; i<MAX_NUM_INPUTS; i++)
+    memset(pData->prev_Y, 0, MAX_NUM_SH_SIGNALS*MAX_LARK_NUM_INPUTS*sizeof(float));
+    memset(pData->prev_inputFrameTD, 0, MAX_LARK_NUM_INPUTS*AMBI_ENC_FRAME_SIZE*sizeof(float));
+    for(i=0; i<MAX_LARK_NUM_INPUTS; i++)
         pData->recalc_SH_FLAG[i] = 1;
 }
 
@@ -96,7 +96,7 @@ void ambi_enc_process
 {
     ambi_enc_data *pData = (ambi_enc_data*)(hAmbi);
     int i, j, ch, nSources, nSH, mixWithPreviousFLAG;
-    float src_dirs[MAX_NUM_INPUTS][2], scale;
+    float src_dirs[MAX_LARK_NUM_INPUTS][2], scale;
     float Y_src[MAX_NUM_SH_SIGNALS];
 
     /* local copies of user parameters */
@@ -106,7 +106,7 @@ void ambi_enc_process
     chOrdering = pData->chOrdering;
     norm = pData->norm;
     nSources = pData->nSources;
-    memcpy(src_dirs, pData->src_dirs_deg, MAX_NUM_INPUTS*2*sizeof(float));
+    memcpy(src_dirs, pData->src_dirs_deg, MAX_LARK_NUM_INPUTS*2*sizeof(float));
     order = SAF_MIN(pData->order, MAX_SH_ORDER);
     nSH = ORDER2NSH(order);
 
@@ -115,7 +115,7 @@ void ambi_enc_process
         /* Load time-domain data */
         for(i=0; i < SAF_MIN(nSources,nInputs); i++)
             utility_svvcopy(inputs[i], AMBI_ENC_FRAME_SIZE, pData->inputFrameTD[i]);
-        for(; i<MAX_NUM_INPUTS; i++)
+        for(; i<MAX_LARK_NUM_INPUTS; i++)
             memset(pData->inputFrameTD[i], 0, AMBI_ENC_FRAME_SIZE * sizeof(float));
 
         /* recalulate SHs (only if encoding direction has changed) */
@@ -139,14 +139,14 @@ void ambi_enc_process
 
         /* spatially encode the input signals into spherical harmonic signals */
         cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, nSH, AMBI_ENC_FRAME_SIZE, nSources, 1.0f,
-                    (float*)pData->Y, MAX_NUM_INPUTS,
+                    (float*)pData->Y, MAX_LARK_NUM_INPUTS,
                     (float*)pData->prev_inputFrameTD, AMBI_ENC_FRAME_SIZE, 0.0f,
                     (float*)pData->outputFrameTD, AMBI_ENC_FRAME_SIZE);
 
         /* Fade between (linearly inerpolate) the new gains and the previous gains (only if the new gains are different) */
         if(mixWithPreviousFLAG){
             cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, nSH, AMBI_ENC_FRAME_SIZE, nSources, 1.0f,
-                        (float*)pData->prev_Y, MAX_NUM_INPUTS,
+                        (float*)pData->prev_Y, MAX_LARK_NUM_INPUTS,
                         (float*)pData->prev_inputFrameTD, AMBI_ENC_FRAME_SIZE, 0.0f,
                         (float*)pData->tempFrame, AMBI_ENC_FRAME_SIZE);
 
@@ -159,11 +159,11 @@ void ambi_enc_process
             cblas_saxpy(nSH*AMBI_ENC_FRAME_SIZE, 1.0f, (float*)pData->tempFrame_fadeOut, 1, (float*)pData->outputFrameTD, 1);
 
             /* for next frame */
-            utility_svvcopy((const float*)pData->Y, MAX_NUM_INPUTS*MAX_NUM_SH_SIGNALS, (float*)pData->prev_Y);
+            utility_svvcopy((const float*)pData->Y, MAX_LARK_NUM_INPUTS*MAX_NUM_SH_SIGNALS, (float*)pData->prev_Y);
         }
 
         /* for next frame */
-        utility_svvcopy((const float*)pData->inputFrameTD, MAX_NUM_INPUTS*AMBI_ENC_FRAME_SIZE, (float*)pData->prev_inputFrameTD);
+        utility_svvcopy((const float*)pData->inputFrameTD, MAX_LARK_NUM_INPUTS*AMBI_ENC_FRAME_SIZE, (float*)pData->prev_inputFrameTD);
 
         /* scale by 1/sqrt(nSources) */
         if(pData->enablePostScaling){
@@ -207,7 +207,7 @@ void ambi_enc_refreshParams(void* const hAmbi)
 {
     ambi_enc_data *pData = (ambi_enc_data*)(hAmbi);
     int i;
-    for(i=0; i<MAX_NUM_INPUTS; i++)
+    for(i=0; i<MAX_LARK_NUM_INPUTS; i++)
         pData->recalc_SH_FLAG[i] = 1;
 }
 
@@ -217,7 +217,7 @@ void ambi_enc_setOutputOrder(void* const hAmbi, int newOrder)
     int i;
     if((SH_ORDERS)newOrder != pData->order){
         pData->order = (SH_ORDERS)newOrder;
-        for(i=0; i<MAX_NUM_INPUTS; i++)
+        for(i=0; i<MAX_LARK_NUM_INPUTS; i++)
             pData->recalc_SH_FLAG[i] = 1;
         /* FUMA only supports 1st order */
         if(pData->order!=SH_ORDER_FIRST && pData->chOrdering == CH_FUMA)
@@ -251,9 +251,9 @@ void ambi_enc_setNumSources(void* const hAmbi, int new_nSources)
 {
     ambi_enc_data *pData = (ambi_enc_data*)(hAmbi);
     int i;
-    pData->new_nSources = SAF_CLAMP(new_nSources, 1, MAX_NUM_INPUTS);
+    pData->new_nSources = SAF_CLAMP(new_nSources, 1, MAX_LARK_NUM_INPUTS);
     pData->nSources = pData->new_nSources;
-    for(i=0; i<MAX_NUM_INPUTS; i++)
+    for(i=0; i<MAX_LARK_NUM_INPUTS; i++)
         pData->recalc_SH_FLAG[i] = 1;
 }
 
@@ -263,7 +263,7 @@ void ambi_enc_setInputConfigPreset(void* const hAmbi, int newPresetID)
     int ch;
     loadSourceConfigPreset(newPresetID, pData->src_dirs_deg, &(pData->new_nSources));
     pData->nSources = pData->new_nSources;
-    for(ch=0; ch<MAX_NUM_INPUTS; ch++)
+    for(ch=0; ch<MAX_LARK_NUM_INPUTS; ch++)
         pData->recalc_SH_FLAG[ch] = 1;
 }
 
@@ -340,7 +340,7 @@ int ambi_enc_getNumSources(void* const hAmbi)
 
 int ambi_enc_getMaxNumSources()
 {
-    return MAX_NUM_INPUTS;
+    return MAX_LARK_NUM_INPUTS;
 }
 
 int ambi_enc_getNSHrequired(void* const hAmbi)
