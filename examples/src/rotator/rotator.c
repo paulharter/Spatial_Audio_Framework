@@ -43,6 +43,7 @@ void rotator_create
     *phRot = (void*)pData;
     
     pData->M_rot_status = M_ROT_RECOMPUTE_QUATERNION;
+    pData->fs = 48000.0f;
   
     /* Default user parameters */
     pData->Q.w = 1.0f;
@@ -94,7 +95,7 @@ void rotator_init
     memset(pData->M_rot, 0, MAX_NUM_SH_SIGNALS*MAX_NUM_SH_SIGNALS*sizeof(float));
     memset(pData->prev_M_rot, 0, MAX_NUM_SH_SIGNALS*MAX_NUM_SH_SIGNALS*sizeof(float));
     memset(pData->prev_inputFrameTD, 0, MAX_NUM_SH_SIGNALS*ROTATOR_FRAME_SIZE*sizeof(float));
-    pData->M_rot_status = M_ROT_RECOMPUTE_QUATERNION;
+    pData->M_rot_status = M_ROT_RECOMPUTE_EULER;//M_ROT_RECOMPUTE_QUATERNION;
 }
 
 void rotator_process

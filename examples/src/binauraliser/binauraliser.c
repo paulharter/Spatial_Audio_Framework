@@ -58,6 +58,7 @@ void binauraliser_create
 
     /* time-frequency transform + buffers */
     pData->hSTFT = NULL;
+    pData->fs = 48000.0f;
     pData->inputFrameTD = (float**)malloc2d(MAX_NUM_INPUTS, BINAURALISER_FRAME_SIZE, sizeof(float));
     pData->outframeTD = (float**)malloc2d(NUM_EARS, BINAURALISER_FRAME_SIZE, sizeof(float));
     pData->inputframeTF = (float_complex***)malloc3d(HYBRID_BANDS, MAX_NUM_INPUTS, TIME_SLOTS, sizeof(float_complex));
@@ -369,6 +370,7 @@ void binauraliser_setInputConfigPreset(void* const hBin, int newPresetID)
         binauraliser_setCodecStatus(hBin, CODEC_STATUS_NOT_INITIALISED);
     for(ch=0; ch<MAX_NUM_INPUTS; ch++)
         pData->recalc_hrtf_interpFLAG[ch] = 1;
+    pData->recalc_M_rotFLAG = 1;
 }
 
 void binauraliser_setEnableRotation(void* const hBin, int newState)
@@ -380,6 +382,7 @@ void binauraliser_setEnableRotation(void* const hBin, int newState)
     if(!pData->enableRotation)
         for (ch = 0; ch<MAX_NUM_INPUTS; ch++) 
             pData->recalc_hrtf_interpFLAG[ch] = 1;
+    pData->recalc_M_rotFLAG = 1;
 }
 
 void binauraliser_setYaw(void  * const hBin, float newYaw)
@@ -434,6 +437,7 @@ void binauraliser_setRPYflag(void* const hBin, int newState)
 {
     binauraliser_data *pData = (binauraliser_data*)(hBin);
     pData->useRollPitchYawFlag = newState;
+    pData->recalc_M_rotFLAG = 1;
 }
 
 void binauraliser_setInterpMode(void* const hBin, int newMode)

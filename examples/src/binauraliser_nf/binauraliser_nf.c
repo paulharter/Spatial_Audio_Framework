@@ -51,7 +51,7 @@ void binauraliserNF_create /* FREQUENCY DOMAIN version */
     pData->useDefaultHRIRsFLAG  = 1; /* pars->sofa_filepath must be valid to set this to 0 */
     pData->enableHRIRsDiffuseEQ = 1;
     pData->nSources     = pData->new_nSources;
-    pData->interpMode   = INTERP_TRI;
+    pData->interpMode   = INTERP_TRI_PS;
     pData->yaw          = 0.0f;
     pData->pitch        = 0.0f;
     pData->roll         = 0.0f;
@@ -92,6 +92,7 @@ void binauraliserNF_create /* FREQUENCY DOMAIN version */
     pData->hrir_loaded_fs   = pData->hrir_runtime_fs = -1; /* unknown */
 
     /* time domain buffers */
+    pData->fs = 48000.0f;
     pData->inputFrameTD     = (float**)malloc2d(MAX_NUM_INPUTS, BINAURALISER_FRAME_SIZE, sizeof(float));
     pData->outframeTD       = (float**)malloc2d(NUM_EARS, BINAURALISER_FRAME_SIZE, sizeof(float));
     pData->inputframeTF     = (float_complex***)malloc3d(HYBRID_BANDS, MAX_NUM_INPUTS, TIME_SLOTS, sizeof(float_complex));
